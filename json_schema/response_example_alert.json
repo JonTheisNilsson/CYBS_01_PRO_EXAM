@@ -1,0 +1,34 @@
+{
+    "alertId": "ALT-SQLI-001-0",
+    "category": "Exploitation",
+    "computerDnsName": "CAD01-TCORP.oresund-industrial.dk",
+    "detectionSource": "Microsoft Defender for Endpoint",
+    "entities": {
+        "domains": [
+            "update-oresund.com"
+        ],
+        "emails": [
+            "eng.larsen@oresund-industrial.dk"
+        ],
+        "fileHashes": [
+            "5d41402abc4b2a76b9719d911017c592"
+        ],
+        "ips": [
+            "192.168.30.10",
+            "172.16.100.10"
+        ],
+        "processes": [
+            "python3.exe sqlmap.py -u http://172.16.100.10/portal/login --data \"username=admin&password=test\" --technique=B --level=5 --batch",
+            "python3.exe sqlmap.py -u http://172.16.100.10/portal/login --data \"username=admin' OR '1'='1'-- -&password=x\" --dump --tables"
+        ],
+        "urls": [
+            "http://172.16.100.10/portal/login?username=admin' OR '1'='1'-- -&password=x",
+            "http://172.16.100.10/portal/login?username=admin'--&password="
+        ]
+    },
+    "firstActivity": "2026-04-29T03:47:02.095331+00:00",
+    "lastActivity": "2026-04-29T05:07:02.095331+00:00",
+    "machineId": "CAD01-TCORP",
+    "severity": "High",
+    "title": "SQL injection tool (sqlmap) execution detected on CAD01-TCORP"
+}
