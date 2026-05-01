@@ -16,4 +16,10 @@
     );
 
 
-  
+    CREATE TABLE IF NOT EXISTS iocs (
+    incidentId  TEXT,
+    type        TEXT,
+    value       TEXT,
+    PRIMARY KEY (incidentId, type, value)
+    );
+
