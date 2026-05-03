@@ -7,6 +7,7 @@ import json
 import sqlite3
 import logging
 from datetime import datetime
+from pathlib import Path
 
 import requests
 from requests import Response
@@ -55,10 +56,6 @@ def get_token(url: str, email: str) -> str:
         with open("token", 'w') as file: # todo rewrite
             file.write(json.dumps(response, indent=4))
         token = response["token"]
-
-    # for testing and for generating json schemas. must delete
-    if response:
-        jsonable_to_file(response)
 
     logger.info("Token got")
     return token
@@ -177,7 +174,7 @@ def request_summary(url: str, token: str) -> Response:
     header = {"Authorization": "Bearer " + token}
     response = requests.get(url + "/api/incidents/summary", headers=header)
 
-    jsonable_to_file(response.json(), "summary_respones.json", mode='w')
+    #jsonable_to_file(response.json(), "summary_respones.json", mode='w')
 
     logger.info(f"{response.status_code} - {response.headers}")
 
@@ -195,35 +192,58 @@ def incidents_to_db(incidents, database="alerts.db") -> None:
                 db.add_incident(connection, incident)
                 for alert in incident["alerts"]:
                     db.add_alert(connection, alert, incident["incidentId"])
-                    iocs = []
-                    for domain in alert["entities"]["domains"]:
-                        iocs.append(('domains', domain))
-                    for email in alert["entities"]["emails"]:
-                         iocs.append(('emails', email))
-                    for fileHash in alert["entities"]["fileHashes"]:
-                         iocs.append(('fileHashes', fileHash))
-                    for ip in alert["entities"]["ips"]:
-                         iocs.append(('ips', ip))
-                    for process in alert["entities"]["processes"]:
-                         iocs.append(('processes', process))    
-                    for url in alert["entities"].get("urls", []):
-                         iocs.append(('urls', url))  
-                    for ioc in iocs:
-                        db.add_ioc(connection, incident["incidentId"], ioc[0], ioc[1])          
+                   
+                    entities = alert['entities']
+                    for key in ('domains', 'emails', 'fileHashes', 'ips', 'processes', 'url'):
+                        for value in entities.get(key, []):
+                            db.add_ioc(connection, incident["incidentId"], key, value)   
+                            
+
+                    # for domain in alert["entities"]["domains"]:
+                    #     iocs.append(('domains', domain))
+                    # for email in alert["entities"]["emails"]:
+                    #      iocs.append(('emails', email))
+                    # for fileHash in alert["entities"]["fileHashes"]:
+                    #      iocs.append(('fileHashes', fileHash))
+                    # for ip in alert["entities"]["ips"]:
+                    #      iocs.append(('ips', ip))
+                    # for process in alert["entities"]["processes"]:
+                    #      iocs.append(('processes', process))    
+                    # for url in alert["entities"].get("urls", []):
+                    #      iocs.append(('urls', url))  
+                    #for ioc in iocs:
+                    #    db.add_ioc(connection, incident["incidentId"], ioc[0], ioc[1])          
 
     except Exception as err:
-        logger.error(err, )
+        logger.error(err)
         print("db error. attempting rollback", file=sys.stderr)
-        connection.rollback() # type: ignore
+        connection.rollback() 
 
 
-def jsonable_to_file(jsonable, filepath="out.json", mode='a') -> None:
+def create_index_db(incidents, database="alerts.db") -> None:
+    
+    print("starting output to db")
+    try:
+        with sqlite3.connect(fr"db/{database}") as connection:
+            db.init_db(connection)
+        
+            for incident in incidents:
+                db.add_index(connection, incident)
+          
+
+    except Exception as err:
+        logger.error(err)
+        print("db error. attempting rollback", file=sys.stderr)
+        connection.rollback() 
+
+
+def jsonable_to_file(jsonable, filename="out.json", mode='a') -> None:
     '''Simple jsonable output to file, mostly for manual testing.
 
     Args:
     '''
     try:
-        with open(filepath, mode) as file:
+        with open(BASE_PATH / filename, mode) as file:
             o = json.dumps(jsonable, indent=4)
             file.write(o)
     
@@ -231,9 +251,9 @@ def jsonable_to_file(jsonable, filepath="out.json", mode='a') -> None:
         print("oh no, my output to file", err)
 
 
-def setup_logger(log_path="exam.log") -> logging.Logger:
+def setup_logger(log_file_name="exam.log") -> logging.Logger:
     logging.basicConfig(
-        filename=log_path,
+        filename=BASE_PATH / log_file_name,
         encoding="utf-8",
         filemode="a",
         format="{asctime} - {levelname} - {message}",
@@ -256,11 +276,16 @@ def main() -> None:
     args = parser.parse_args()
     # todo: add a reset flag to drop db, download everything from to top. maybe backup db
 
+    #set module directory todo
+    global BASE_PATH
+    BASE_PATH = Path(__file__).resolve().parent
+
     #setup env todo anything else?
     load_dotenv(override=True) 
 
-
-    #set module directory todo
+    # setting logger to global to avoid having to pass it around
+    global logger
+    logger = setup_logger()
 
     #set url and email
     if args.url:
@@ -279,12 +304,14 @@ def main() -> None:
         raise SystemExit(1)  
 
 
-    # setting logger to global to avoid having to pass it around
-    global logger
-    logger = setup_logger()
-
     # todo think should  tkoen be saved in env?
     token = get_token(url, email) 
+
+    if args.debug:
+        print("creating index of all incidents to check for dupes")
+        incidents= get_incidents(url, token)
+        create_index_db(incidents, "exam.db")
+        raise SystemExit(1)  
 
 
     # check how many incidents in sky
@@ -300,8 +327,12 @@ def main() -> None:
     
     # if there is new incidents, dl them
     print(count_in_db, 'db')
+
+
+
     if count_in_sky > count_in_db:
         incidents = get_incidents(url, token, skip=count_in_db)
+        
         incidents_to_db(incidents, "exam.db")
     #todo some kind of message if no new
 

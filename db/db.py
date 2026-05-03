@@ -42,13 +42,20 @@ def init_db(connection) -> None:
         );''')
     connection.commit()
         
+    cursor.execute('''
+    CREATE TABLE IF NOT EXISTS incidents_index (
+    ID              INTEGER PRIMARY KEY AUTOINCREMENT,
+    incidentId      TEXT,
+    incidentName    TEXT
+    );''')
+    connection.commit()
     #
 
 
 def add_alert(connection, alert, incident_id:str) -> None:
     cursor = connection.cursor()
     cursor.execute(
-        "INSERT INTO alerts (alertID, incidentID, machineID, detectionSource, firstActivity) VALUES (?, ?, ?, ?, ?)",
+        "INSERT OR REPLACE INTO alerts (alertID, incidentID, machineID, detectionSource, firstActivity) VALUES (?, ?, ?, ?, ?)",
         (alert["alertId"], 
          incident_id,  
          alert["machineId"], 
@@ -61,7 +68,7 @@ def add_alert(connection, alert, incident_id:str) -> None:
 def add_incident(connection, incident) -> None:
     cursor = connection.cursor()
     cursor.execute(
-        "INSERT INTO incidents (incidentID, incidentName, severity, status, createdTime) VALUES (?, ?, ?, ?, ?)",
+        "INSERT OR REPLACE INTO incidents (incidentID, incidentName, severity, status, createdTime) VALUES (?, ?, ?, ?, ?)",
         (incident["incidentId"], 
          incident["incidentName"],
          incident["severity"],
@@ -78,6 +85,15 @@ def add_ioc(connection, incident_id, ioc_type, ioc_value) -> None:
                     ioc_type,
                     ioc_value))
     connection.commit()
+
+
+def add_index(connection, incident) -> None:
+    cursor = connection.cursor()
+    cursor.execute("INSERT INTO incidents_index(incidentId, incidentName) VALUES (?,?)",
+                   (incident['incidentId'],
+                    incident['incidentName']))
+    connection.commit()
+
 
 
 def get_count_incidents(connection) -> int:

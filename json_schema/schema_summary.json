@@ -1,0 +1,60 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "by_classification": {
+      "type": "object",
+      "properties": {
+        "FalsePositive": {"type": "number"},
+        "InformationalExpectedActivity": {"type": "number"},
+        "TruePositive": {"type": "number" }
+      },
+      "required": [
+        "FalsePositive",
+        "InformationalExpectedActivity",
+        "TruePositive"
+      ]
+    },
+    "by_severity": {
+      "type": "object",
+      "properties": {
+        "Critical": { "type": "number" },
+        "High": { "type": "number" },
+        "Low": { "type": "number" },
+        "Medium": { "type": "number" }
+      },
+      "required": [
+        "Critical",
+        "High",
+        "Low",
+        "Medium"
+      ]
+    },
+    "by_status": {
+      "type": "object",
+      "properties": {
+        "Active": {"type": "number" },
+        "InProgress": {"type": "number" },
+        "Resolved": {"type": "number" }
+      },
+      "required": [
+        "Active",
+        "InProgress",
+        "Resolved"
+      ]
+    },
+    "recent_incidents": { "type": "number" },
+    "top_malware_families": { "type": "object" },
+    "top_threat_actors": { "type": "object" },
+    "total_incidents": { "type": "number" }
+  },
+  "required": [
+    "by_classification",
+    "by_severity",
+    "by_status",
+    "recent_incidents",
+    "top_malware_families",
+    "top_threat_actors",
+    "total_incidents"
+  ]
+}
