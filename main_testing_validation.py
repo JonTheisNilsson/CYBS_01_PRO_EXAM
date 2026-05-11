@@ -159,7 +159,5 @@ def main() -> None:
     print(f"{balert=}")
 
 
-    # test validate alert
-
 if __name__ == "__main__":
     main()

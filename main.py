@@ -11,10 +11,10 @@ from pathlib import Path
 
 import requests
 from requests import Response
-from dotenv import load_dotenv, dotenv_values 
+from dotenv import load_dotenv
 
 import db.db as db
-from validate import validate_response
+from validate import validate_response, validate_json
 #endregion
 
 def get_token(url: str, email: str) -> str:
@@ -36,6 +36,8 @@ def get_token(url: str, email: str) -> str:
         with open ("token", 'r') as file: 
             token_object = json.load(file)
 
+        validate_json(token_object, BASE_PATH / "json_schema" / "schema_token.json")
+
         token = token_object["token"]
         expires_at = token_object["expires_at"]
         expires_at = datetime.fromisoformat(expires_at)
@@ -43,19 +45,33 @@ def get_token(url: str, email: str) -> str:
         if expires_at.timestamp() < datetime.now().timestamp():  # todo: test sammenligning af datetime
             logger.info("Local token expired.")
             token = None
+
+        
         
     except Exception as err:
-        logger.info("Failure to find local token. {err}")  # catch-all
+        logger.info(f"Failure to find local token. {err}")  # catch-all
         token = None
 
     if token is None:  
-        logger.info("Requesting new token.")
-        response = request_token(url, email)
-        response = response.json()
-        
-        with open("token", 'w') as file: # todo rewrite
-            file.write(json.dumps(response, indent=4))
-        token = response["token"]
+        try:
+            logger.info("Requesting new token.")
+            response = request_token(url, email)
+            response = response.json()
+            token = response["token"]
+        except:
+            print("todo - critical failure to request new token", file=sys.stderr)
+            raise SystemExit(1)
+            
+        try:
+            with open("token", 'w') as file: # todo rewrite
+                file.write(json.dumps(response, indent=4))
+            
+        except IOError as err:
+            logger.warning(f"todo: critical? - {err}")
+
+        except Exception as err: 
+            logger.warning(f"failure to save token - {err}")
+            
 
     logger.info("Token got")
     return token
@@ -75,7 +91,7 @@ def get_incidents(url: str, token: str, skip=0) -> list:
     Args:
         url (str): url!
         token (str): token
-        skip (int): how many incidents to skip in (in chronological order?)
+        skip (int): how many incidents to skip
     
     Returns:
         list: list of validated incidents
@@ -87,7 +103,7 @@ def get_incidents(url: str, token: str, skip=0) -> list:
     while (True):
         try:
             response = request_incidents(url, token, top=100, skip=skip)
-            if response.status_code==418:
+            if response.status_code == 418:
                 jsonable_to_file(response.json(), "teapot.txt", mode='a')
                 raise requests.exceptions.Timeout
 
@@ -100,12 +116,7 @@ def get_incidents(url: str, token: str, skip=0) -> list:
 
             print("Timeout. Retried once. Exiting", file=sys.stderr)
             raise SystemExit(1)
-        except requests.HTTPError as err:
-            print("http error", file=sys.stderr)
-            raise SystemExit(1)
-        except requests.RequestException as err:
-            print("RequestException", file=sys.stderr)
-            raise SystemExit(1)
+
         except Exception as err:
             print("oh no, my {err.__name__}", file=sys.stderr)
             raise SystemExit(1)      
@@ -122,7 +133,7 @@ def get_incidents(url: str, token: str, skip=0) -> list:
         jsonable_to_file(response, f"tmp_bulk_response_{skip}.json", 'w')
 
         for i in response["value"]:
-            if validate_response(i, "json_schema/schema_incident.json"):
+            if validate_json(i, BASE_PATH / "json_schema" / "schema_incident.json"):
                 incidents.append(i)
             else:
                 logger.error(f"Validation error, {i} ") # todo what to do 
@@ -174,7 +185,7 @@ def request_summary(url: str, token: str) -> Response:
     header = {"Authorization": "Bearer " + token}
     response = requests.get(url + "/api/incidents/summary", headers=header)
 
-    #jsonable_to_file(response.json(), "summary_respones.json", mode='w')
+    jsonable_to_file(response.json(), "summary_respones.json", mode='w')
 
     logger.info(f"{response.status_code} - {response.headers}")
 
@@ -190,29 +201,16 @@ def incidents_to_db(incidents, database="alerts.db") -> None:
         
             for incident in incidents:
                 db.add_incident(connection, incident)
-                for alert in incident["alerts"]:
+
+                for alert in incident.get("alerts", []):
                     db.add_alert(connection, alert, incident["incidentId"])
                    
                     entities = alert['entities']
-                    for key in ('domains', 'emails', 'fileHashes', 'ips', 'processes', 'url'):
-                        for value in entities.get(key, []):
-                            db.add_ioc(connection, incident["incidentId"], key, value)   
-                            
-
-                    # for domain in alert["entities"]["domains"]:
-                    #     iocs.append(('domains', domain))
-                    # for email in alert["entities"]["emails"]:
-                    #      iocs.append(('emails', email))
-                    # for fileHash in alert["entities"]["fileHashes"]:
-                    #      iocs.append(('fileHashes', fileHash))
-                    # for ip in alert["entities"]["ips"]:
-                    #      iocs.append(('ips', ip))
-                    # for process in alert["entities"]["processes"]:
-                    #      iocs.append(('processes', process))    
-                    # for url in alert["entities"].get("urls", []):
-                    #      iocs.append(('urls', url))  
-                    #for ioc in iocs:
-                    #    db.add_ioc(connection, incident["incidentId"], ioc[0], ioc[1])          
+                    
+                    for type_, values in entities.items():
+                        for value in values:
+                            #print(f"{type_} - {value}")
+                            db.add_ioc(connection, incident["incidentId"], type_, value)         
 
     except Exception as err:
         logger.error(err)
@@ -281,7 +279,7 @@ def main() -> None:
     BASE_PATH = Path(__file__).resolve().parent
 
     #setup env todo anything else?
-    load_dotenv(override=True) 
+    load_dotenv() 
 
     # setting logger to global to avoid having to pass it around
     global logger
@@ -300,7 +298,7 @@ def main() -> None:
 
     # url and email is required, todo better error message, add log
     if url is None or email is None:
-        print("oh no, my {err.__name__}", file=sys.stderr)
+        print("E-mail and url is required. Please see --help", file=sys.stderr)
         raise SystemExit(1)  
 
 
@@ -312,6 +310,13 @@ def main() -> None:
         incidents= get_incidents(url, token)
         create_index_db(incidents, "exam.db")
         raise SystemExit(1)  
+    
+    ################################################################################33
+    incidents = get_incidents(url, token, skip=590)
+      
+    incidents_to_db(incidents, "exam.db")
+    #raise SystemExit(1)  
+    #######################################################################
 
 
     # check how many incidents in sky

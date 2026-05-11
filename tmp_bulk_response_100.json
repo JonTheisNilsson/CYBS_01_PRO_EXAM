@@ -1,16 +1,16 @@
 {
     "@odata.context": "https://api.security.microsoft.com/api/$metadata#Incidents",
-    "@odata.count": 354,
+    "@odata.count": 591,
     "@odata.nextLink": "/api/incidents?$skip=200&$top=100",
     "api_version": "4.0",
     "mode": "exam",
     "note": "New incidents are continuously generated in the background",
     "pagination": {
-        "filtered_total": 354,
+        "filtered_total": 591,
         "returned": 100,
         "skip": 100,
         "top": 100,
-        "unfiltered_total": 354
+        "unfiltered_total": 591
     },
     "value": [
         {
