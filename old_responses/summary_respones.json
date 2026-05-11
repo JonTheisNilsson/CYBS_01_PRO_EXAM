@@ -1,36 +1,36 @@
 {
     "by_classification": {
-        "FalsePositive": 90,
-        "InformationalExpectedActivity": 82,
-        "TruePositive": 92
+        "FalsePositive": 204,
+        "InformationalExpectedActivity": 191,
+        "TruePositive": 196
     },
     "by_severity": {
-        "Critical": 75,
-        "High": 68,
-        "Low": 55,
-        "Medium": 66
+        "Critical": 159,
+        "High": 149,
+        "Low": 135,
+        "Medium": 148
     },
     "by_status": {
-        "Active": 91,
-        "InProgress": 81,
-        "Resolved": 92
+        "Active": 193,
+        "InProgress": 201,
+        "Resolved": 197
     },
-    "recent_incidents": 264,
+    "recent_incidents": 591,
     "top_malware_families": {
-        "BlackEnergy": 27,
-        "Cobalt Strike": 26,
-        "Emotet": 33,
-        "Industroyer": 34,
-        "Mimikatz": 26,
-        "PowerShell Empire": 29,
-        "Qakbot": 27,
-        "TRITON": 33,
-        "TrickBot": 29
+        "BlackEnergy": 58,
+        "Cobalt Strike": 70,
+        "Emotet": 62,
+        "Industroyer": 71,
+        "Mimikatz": 61,
+        "PowerShell Empire": 64,
+        "Qakbot": 70,
+        "TRITON": 71,
+        "TrickBot": 64
     },
     "top_threat_actors": {
-        "APT28": 31,
-        "APT33": 23,
-        "Lazarus Group": 26
+        "APT28": 67,
+        "APT33": 68,
+        "Lazarus Group": 60
     },
-    "total_incidents": 264
+    "total_incidents": 591
 }

@@ -1,10 +1,28 @@
+for at køre:
+
+installer de moduler vi bruger:
+
+pip install -r requirements.txt
+
+
+lav en fil til environment varible
+.env
+
+indhold:
+URL = "http://164.92.167.24"
+EMAIL = "din skole mail"
+
+
+
+
 add venv to gitignore
 
 
-
+python -m venv .venv
 source .venv/bin/activate
+source .venv/bin/activate.fish
 
-pip install -r requirements.txt
+
 
 pip install python-dotenv
 
