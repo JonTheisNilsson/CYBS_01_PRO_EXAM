@@ -215,7 +215,7 @@ def incidents_to_db(incidents, database="alerts.db") -> None:
     except Exception as err:
         logger.error(err)
         print("db error. attempting rollback", file=sys.stderr)
-        connection.rollback() 
+        connection.rollback()  # type: ignore
 
 
 def create_index_db(incidents, database="alerts.db") -> None:
@@ -232,7 +232,7 @@ def create_index_db(incidents, database="alerts.db") -> None:
     except Exception as err:
         logger.error(err)
         print("db error. attempting rollback", file=sys.stderr)
-        connection.rollback() 
+        connection.rollback()  # type: ignore
 
 
 def jsonable_to_file(jsonable, filename="out.json", mode='a') -> None:
@@ -312,9 +312,9 @@ def main() -> None:
         raise SystemExit(1)  
     
     ################################################################################33
-    incidents = get_incidents(url, token, skip=590)
+    #incidents = get_incidents(url, token, skip=590)
       
-    incidents_to_db(incidents, "exam.db")
+    #incidents_to_db(incidents, "exam.db")
     #raise SystemExit(1)  
     #######################################################################
 

@@ -24,11 +24,13 @@ source .venv/bin/activate.fish
 
 
 
-pip install python-dotenv
+
 
 
 todo:
+sql executemany
 ioc types skal tages fra api
+ connection.rollback()  # type: ignore
 
 create validation schema for
 token response - not done
@@ -72,4 +74,3 @@ bør vi holde os til minimum db eller fylde den op? det er fint med minimum
 
 Hvad kunne det f.eks. være (Handle API credentials securely)? token kunne holdes i .env, men det er fint at holde den i sin egen fil. Så slipper vi for at opdatere .env i runtime.
 
-hvad er et namespace?
