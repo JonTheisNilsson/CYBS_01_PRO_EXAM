@@ -13,37 +13,34 @@ URL = "http://164.92.167.24"
 EMAIL = "din skole mail"
 
 
-
+-----------------------------------------------
 
 add venv to gitignore
-
 
 python -m venv .venv
 source .venv/bin/activate
 source .venv/bin/activate.fish
 
 
-
-
-
-
 todo:
 sql executemany
 ioc types skal tages fra api
- connection.rollback()  # type: ignore
+connection.rollback()  # type: ignore
+tilføj log om requests
+rate limiting - if hitting rate limit send current recieved to db
 
 create validation schema for
-token response - not done
-bulk response
-incident - needs testing
-alert - needs testing
+-token response - not done
+-bulk response
+-incident - needs testing
+-alert - needs testing
 
 update with built-in types for email, ips, hosts?....
 
 create new sql schema
 
-logging
-
+logging - skal tilføje detailer på task
+-------------------------
 
 jsonschema
 alert changed, last_seen is removed and can no longer be required in schema
