@@ -1,0 +1,205 @@
+{
+    "@odata.context": "https://api.security.microsoft.com/api/$metadata#Incidents",
+    "@odata.count": 1598,
+    "api_version": "4.0",
+    "mode": "exam",
+    "note": "New incidents are continuously generated in the background",
+    "pagination": {
+        "filtered_total": 1598,
+        "returned": 1,
+        "skip": 1597,
+        "top": 100,
+        "unfiltered_total": 1598
+    },
+    "value": [
+        {
+            "alerts": [
+                {
+                    "alertId": "ALT2591-0",
+                    "category": "Malware",
+                    "computerDnsName": "BACKUP01-TCORP.oresund-industrial.dk",
+                    "detectionSource": "Microsoft Defender for Endpoint",
+                    "entities": {
+                        "domains": [
+                            "oresund-industrial.dk.attacker.cc"
+                        ],
+                        "emails": [
+                            "cfo.hansen@oresund-industrial.dk"
+                        ],
+                        "fileHashes": [
+                            "7d865e959b2466918c9863afca942d0fb89d7c9ac0c99bafc3749504ded97730"
+                        ],
+                        "ips": [
+                            "192.168.30.10"
+                        ],
+                        "processes": [
+                            "powershell.exe",
+                            "cmd.exe"
+                        ]
+                    },
+                    "firstActivity": "2026-05-15T09:32:29.635587+00:00",
+                    "lastActivity": "2026-05-16T07:35:29.635587+00:00",
+                    "machineId": "BACKUP01-TCORP",
+                    "severity": "Medium",
+                    "title": "Suspicious PowerShell execution detected on BACKUP01-TCORP"
+                },
+                {
+                    "alertId": "ALT2591-1",
+                    "category": "Exfiltration",
+                    "computerDnsName": "HMI01-F1.oresund-industrial.dk",
+                    "detectionSource": "Microsoft Defender for Office 365",
+                    "entities": {
+                        "domains": [
+                            "oresund-supplier-portal.net"
+                        ],
+                        "emails": [
+                            "eng.larsen@oresund-industrial.dk",
+                            "suspicious@external-vendor.com"
+                        ],
+                        "fileHashes": [
+                            "098f6bcd4621d373cade4e832627b4f6",
+                            "e99a18c428cb38d5f260853678922e03"
+                        ],
+                        "ips": [
+                            "194.165.16.98",
+                            "91.108.56.175",
+                            "45.142.212.100"
+                        ],
+                        "processes": [
+                            "powershell.exe",
+                            "cmd.exe"
+                        ]
+                    },
+                    "firstActivity": "2026-05-15T09:11:29.635587+00:00",
+                    "lastActivity": "2026-05-15T20:35:29.635587+00:00",
+                    "machineId": "HMI01-F1",
+                    "severity": "Low",
+                    "title": "PLC firmware modification attempt detected"
+                },
+                {
+                    "alertId": "ALT2591-2",
+                    "category": "Malware",
+                    "computerDnsName": "BACKUP01-TCORP.oresund-industrial.dk",
+                    "detectionSource": "Microsoft Defender for Endpoint",
+                    "entities": {
+                        "domains": [
+                            "command-control-eu.net"
+                        ],
+                        "emails": [
+                            "eng.larsen@oresund-industrial.dk"
+                        ],
+                        "fileHashes": [
+                            "e99a18c428cb38d5f260853678922e03"
+                        ],
+                        "ips": [
+                            "10.1.40.21",
+                            "45.142.212.100"
+                        ],
+                        "processes": [
+                            "powershell.exe",
+                            "cmd.exe"
+                        ]
+                    },
+                    "firstActivity": "2026-05-15T08:47:29.635587+00:00",
+                    "lastActivity": "2026-05-15T21:35:29.635587+00:00",
+                    "machineId": "BACKUP01-TCORP",
+                    "severity": "Critical",
+                    "title": "PLC firmware modification attempt detected"
+                },
+                {
+                    "alertId": "ALT2591-3",
+                    "category": "Malware",
+                    "computerDnsName": "DC01-TCORP.oresund-industrial.dk",
+                    "detectionSource": "Microsoft Defender for Identity",
+                    "entities": {
+                        "domains": [
+                            "scada-remote-access.biz"
+                        ],
+                        "emails": [
+                            "eng.larsen@oresund-industrial.dk",
+                            "f1.supervisor@oresund-industrial.dk"
+                        ],
+                        "fileHashes": [
+                            "e99a18c428cb38d5f260853678922e03"
+                        ],
+                        "ips": [
+                            "192.168.30.10",
+                            "91.108.56.175",
+                            "45.142.212.100"
+                        ],
+                        "processes": [
+                            "powershell.exe"
+                        ]
+                    },
+                    "firstActivity": "2026-05-15T09:35:29.635587+00:00",
+                    "lastActivity": "2026-05-16T08:35:29.635587+00:00",
+                    "machineId": "DC01-TCORP",
+                    "severity": "Low",
+                    "title": "Phishing email targeting \u00d8resund Industrial employees"
+                },
+                {
+                    "alertId": "ALT2591-4",
+                    "category": "Phishing",
+                    "computerDnsName": "SCADA01-F1.oresund-industrial.dk",
+                    "detectionSource": "Microsoft Defender for Identity",
+                    "entities": {
+                        "domains": [
+                            "siemens-update-dl.org",
+                            "update-oresund.com"
+                        ],
+                        "emails": [
+                            "cfo.hansen@oresund-industrial.dk"
+                        ],
+                        "fileHashes": [
+                            "098f6bcd4621d373cade4e832627b4f6"
+                        ],
+                        "ips": [
+                            "192.168.30.22"
+                        ],
+                        "processes": [
+                            "powershell.exe"
+                        ]
+                    },
+                    "firstActivity": "2026-05-15T09:14:29.635587+00:00",
+                    "lastActivity": "2026-05-16T05:35:29.635587+00:00",
+                    "machineId": "SCADA01-F1",
+                    "severity": "Low",
+                    "title": "Brute force attack against domain controller"
+                }
+            ],
+            "assignedTo": "soc.analyst@oresund-industrial.dk",
+            "classification": "TruePositive",
+            "comments": [
+                {
+                    "comment": "Initial analysis shows indicators consistent with XENOTIME TTPs targeting industrial manufacturing environments",
+                    "createdBy": "soc.analyst@oresund-industrial.dk",
+                    "createdTime": "2026-05-15T09:35:29.635587+00:00"
+                }
+            ],
+            "createdTime": "2026-05-15T08:35:29.635587+00:00",
+            "determination": "Phishing",
+            "impactedEntities": {
+                "machines": 3,
+                "mailboxes": 2,
+                "users": 1
+            },
+            "incidentId": "INC2591",
+            "incidentName": "XENOTIME - SCADA Reconnaissance",
+            "lastUpdateTime": "2026-05-17T04:35:29.635587+00:00",
+            "mitreTechniques": [
+                "T0817",
+                "T1016",
+                "T1021.002"
+            ],
+            "severity": "Low",
+            "status": "Resolved",
+            "summary": "Security incident at \u00d8resund Industrial Manufacturing A/S involving XENOTIME with 5 alerts. Investigation shows Industroyer malware deployment with potential impact on manufacturing operations.",
+            "tags": [
+                "XENOTIME",
+                "Industroyer",
+                "\u00d8resund Industrial"
+            ],
+            "threatFamily": "Industroyer"
+        }
+    ]
+}

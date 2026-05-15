@@ -126,7 +126,7 @@ def get_incidents(url: str, token: str, skip=0) -> list:
         except requests.exceptions.Timeout as err:
             if retry: 
                 print("Timeout. Retrying in 5 sec")
-                wait_with_animation(5)
+                wait_seconds(5)
                 #time.sleep(5)
                 retry = False
                 continue
@@ -157,7 +157,7 @@ def get_incidents(url: str, token: str, skip=0) -> list:
         
         if "@odata.nextLink" in response:
             skip += 100
-            wait_with_animation(2)
+            wait_seconds(2)
             #print("Waiting...")
             #time.sleep(2)
         else:
@@ -262,22 +262,28 @@ def jsonable_to_file(jsonable, filename="out.json", mode='a') -> None:
     '''Simple jsonable output to file, mostly for manual testing'''
     try:
         with open(BASE_PATH / filename, mode) as file:
-            o = json.dumps(jsonable, indent=4)
-            file.write(o)
+            output = json.dumps(jsonable, indent=4)
+            file.write(output)
     
     except Exception as err:
         print("oh no, my output to file", err)
 
-def wait_with_animation(seconds: int=1):
+
+def wait_seconds(seconds: int=1, animation: str|list="|/-\\") -> None:
     '''Waiting x seconds while displaying animation
+    todo: vi håndtere ikke overflow, er faktisk ikke sikker på hvordan det fungerer i python, da int ikke 
+    har den samme afgrænsede værdi som i andre sprog.
+    todo: Siden vi højst venter et par sekunder er det ikke nødvendigt, men det ville være god 
+    stil at gardere sig imod det, eller i hvert fald sætte sig ind i.
     '''
-    animation = "|/-\\"
+
     id = 0
     end = time.time() + seconds
     while end > time.time():
         print(animation[id % len(animation)], end="\r")
         id += 1
         time.sleep(0.1)
+
 
 def setup_logger(log_file_name="exam.log") -> logging.Logger:
     '''  

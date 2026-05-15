@@ -36,7 +36,7 @@ sql executemany
 rate limiting - if hitting rate limit send current recieved to db
 ioc types skal tages fra api - ok, skal testes
 
-# OVervejelser
+# Overvejelser
 Hvad sker der hvis .env ikke findes
 bør token gemmes i env
 vi bruger ikke db_init.sql - skal vi bare slette den?

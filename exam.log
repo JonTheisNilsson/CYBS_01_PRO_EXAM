@@ -374,3 +374,23 @@
 2026-05-15 08:11 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 06:11:46 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
 2026-05-15 08:11 - INFO - Requesting 100 incidents, skip = 1530
 2026-05-15 08:11 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 06:11:46 GMT', 'Content-Type': 'application/json', 'Content-Length': '177670', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 08:35 - INFO - Attempting to open local token.
+2026-05-15 08:35 - INFO - Token got
+2026-05-15 08:35 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 06:35:53 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 08:35 - INFO - Requesting 100 incidents, skip = 1588
+2026-05-15 08:35 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 06:35:53 GMT', 'Content-Type': 'application/json', 'Content-Length': '3803', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 11:04 - INFO - Attempting to open local token.
+2026-05-15 11:04 - INFO - Token got
+2026-05-15 11:04 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 09:04:07 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 11:04 - INFO - Requesting 100 incidents, skip = 1588
+2026-05-15 11:04 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 09:04:07 GMT', 'Content-Type': 'application/json', 'Content-Length': '31091', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 11:04 - INFO - Attempting to open local token.
+2026-05-15 11:04 - INFO - Token got
+2026-05-15 11:04 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 09:04:20 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 11:04 - INFO - Requesting 100 incidents, skip = 1597
+2026-05-15 11:04 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 09:04:21 GMT', 'Content-Type': 'application/json', 'Content-Length': '4363', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 11:10 - INFO - Attempting to open local token.
+2026-05-15 11:10 - INFO - Token got
+2026-05-15 11:10 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 09:10:30 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 11:10 - INFO - Requesting 100 incidents, skip = 1597
+2026-05-15 11:10 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 09:10:30 GMT', 'Content-Type': 'application/json', 'Content-Length': '4363', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
