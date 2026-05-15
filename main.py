@@ -122,46 +122,46 @@ def get_incidents(url: str, token: str, skip=0) -> list:
                 jsonable_to_file(response.json(), "teapot.txt", mode='a')
                 raise requests.exceptions.Timeout
             #todo validate response
+   
+            if response.status_code != 200:
+                with open("temp_error.txt", 'w') as file:
+                    file.write(str(response.content)) # todo: kan det skiftes ud med eksisterende funktion?
+                raise Exception
+
+            response = response.json() # todo: error handleing
+            
+            #if debug:
+            #   jsonable_to_file(response, f"tmp_bulk_response_{skip}.json", 'w')
+
+            for i in response["value"]:
+                if validate_json(i, BASE_PATH / "json_schema" / "schema_incident.json"):
+                    incidents.append(i)
+                else:
+                    logger.error(f"Validation error, {i} ") # todo what to do 
+            
+            if "@odata.nextLink" in response:
+                skip += 100
+                wait_seconds(2)
+                #print("Waiting...")
+                #time.sleep(2)
+            else:
+                break
 
         except requests.exceptions.Timeout as err:
             if retry: 
                 print("Timeout. Retrying in 5 sec")
-                wait_seconds(5)
+                wait_seconds(5) # todo: make a countdown animation
                 #time.sleep(5)
                 retry = False
                 continue
-
-            print("Timeout. Retried once. Exiting", file=sys.stderr)
-            raise SystemExit(1)
+            else:
+                print("Timeout. Retried once. Exiting.")
+                raise
 
         except Exception as err:
-            print("oh no, my {err.__name__}", file=sys.stderr)
-            raise SystemExit(1)      
-        
-        if response.status_code != 200:
-            with open("temp_error.txt", 'w') as file:
-                file.write(str(response.content))
-
-        response = response.json() # todo: error handleing
-        
-        # with open(f"tmp_bulk_response_{skip}.json", 'w') as file:
-        #     file.write(json.dumps(response, indent=4))
-        #debug
-        jsonable_to_file(response, f"tmp_bulk_response_{skip}.json", 'w')
-
-        for i in response["value"]:
-            if validate_json(i, BASE_PATH / "json_schema" / "schema_incident.json"):
-                incidents.append(i)
-            else:
-                logger.error(f"Validation error, {i} ") # todo what to do 
-        
-        if "@odata.nextLink" in response:
-            skip += 100
-            wait_seconds(2)
-            #print("Waiting...")
-            #time.sleep(2)
-        else:
-            break
+            print("Error while retriving data. Flushing already recieved data. There can more to retrive on server.")
+            logger.error(err)
+            break  
 
     return incidents
 
