@@ -337,3 +337,40 @@
 2026-05-11 17:00 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Mon, 11 May 2026 15:00:21 GMT', 'Content-Type': 'application/json', 'Content-Length': '285148', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
 2026-05-11 17:00 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Mon, 11 May 2026 15:00:23 GMT', 'Content-Type': 'application/json', 'Content-Length': '303691', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
 2026-05-11 17:00 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Mon, 11 May 2026 15:00:26 GMT', 'Content-Type': 'application/json', 'Content-Length': '265767', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-12 22:04 - INFO - Attempting to open local token.
+2026-05-12 22:04 - INFO - Local token expired.
+2026-05-12 22:04 - INFO - Requesting new token.
+2026-05-12 22:04 - INFO - Token got
+2026-05-12 22:04 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Tue, 12 May 2026 20:04:13 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-12 22:04 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Tue, 12 May 2026 20:04:13 GMT', 'Content-Type': 'application/json', 'Content-Length': '292613', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-12 22:04 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Tue, 12 May 2026 20:04:15 GMT', 'Content-Type': 'application/json', 'Content-Length': '72760', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-13 09:23 - INFO - Attempting to open local token.
+2026-05-13 09:23 - INFO - Token got
+2026-05-13 09:23 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Wed, 13 May 2026 07:23:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-13 09:23 - INFO - Requesting 100 incidents, skip = 1319
+2026-05-13 09:23 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Wed, 13 May 2026 07:23:25 GMT', 'Content-Type': 'application/json', 'Content-Length': '147163', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-13 13:53 - INFO - Attempting to open local token.
+2026-05-13 13:53 - INFO - Token got
+2026-05-13 13:53 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Wed, 13 May 2026 11:53:39 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-13 13:53 - INFO - Requesting 100 incidents, skip = 1371
+2026-05-13 13:53 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Wed, 13 May 2026 11:53:39 GMT', 'Content-Type': 'application/json', 'Content-Length': '51712', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-14 14:54 - INFO - Attempting to open local token.
+2026-05-14 14:54 - INFO - Local token expired.
+2026-05-14 14:54 - INFO - Requesting new token.
+2026-05-14 14:54 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Thu, 14 May 2026 12:54:56 GMT', 'Content-Type': 'application/json', 'Content-Length': '335', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-14 14:54 - INFO - Token got
+2026-05-14 14:54 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Thu, 14 May 2026 12:54:56 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-14 14:54 - INFO - Requesting 100 incidents, skip = 1389
+2026-05-14 14:54 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Thu, 14 May 2026 12:54:56 GMT', 'Content-Type': 'application/json', 'Content-Length': '272024', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-14 14:54 - INFO - Requesting 100 incidents, skip = 1489
+2026-05-14 14:54 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Thu, 14 May 2026 12:54:58 GMT', 'Content-Type': 'application/json', 'Content-Length': '47004', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-14 20:56 - INFO - Attempting to open local token.
+2026-05-14 20:56 - INFO - Token got
+2026-05-14 20:56 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Thu, 14 May 2026 18:56:37 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-14 20:56 - INFO - Requesting 100 incidents, skip = 1505
+2026-05-14 20:56 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Thu, 14 May 2026 18:56:37 GMT', 'Content-Type': 'application/json', 'Content-Length': '84374', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 08:11 - INFO - Attempting to open local token.
+2026-05-15 08:11 - INFO - Token got
+2026-05-15 08:11 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 06:11:46 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-15 08:11 - INFO - Requesting 100 incidents, skip = 1530
+2026-05-15 08:11 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Fri, 15 May 2026 06:11:46 GMT', 'Content-Type': 'application/json', 'Content-Length': '177670', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}

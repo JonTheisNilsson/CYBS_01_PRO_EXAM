@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+""" todo docstring
+"""
+
 #region imports
 import argparse
 import os
@@ -37,17 +41,22 @@ def get_token(url: str, email: str) -> str:
             token_object = json.load(file)
 
         validate_json(token_object, BASE_PATH / "json_schema" / "schema_token.json")
+        # todo: kigger ikke på resultatet af validering
+        # siden vi har gemt hele responsen kan vi teste den påvores json schema for token response.
 
         token = token_object["token"]
+
+        if email != token_object["email"]:
+            logger.info("Local token belongs to different user.")
+            token = None
+
         expires_at = token_object["expires_at"]
         expires_at = datetime.fromisoformat(expires_at)
 
-        if expires_at.timestamp() < datetime.now().timestamp():  # todo: test sammenligning af datetime
+        if expires_at.timestamp() < datetime.now().timestamp(): 
             logger.info("Local token expired.")
             token = None
 
-        
-        
     except Exception as err:
         logger.info(f"Failure to find local token. {err}")  # catch-all
         token = None
@@ -56,6 +65,7 @@ def get_token(url: str, email: str) -> str:
         try:
             logger.info("Requesting new token.")
             response = request_token(url, email)
+            # todo: validate token response
             response = response.json()
             token = response["token"]
         except:
@@ -63,7 +73,7 @@ def get_token(url: str, email: str) -> str:
             raise SystemExit(1)
             
         try:
-            with open("token", 'w') as file: # todo rewrite
+            with open("token", 'w') as file:
                 file.write(json.dumps(response, indent=4))
             
         except IOError as err:
@@ -78,10 +88,14 @@ def get_token(url: str, email: str) -> str:
 
 
 def request_token(url: str, email: str) -> Response:
-    # Happily ignoring all exception handling todo
-    r = requests.post(url + "/api/auth/token", json={"email": email})
+    '''  
+    todo: Another unnecessary docstring
+    '''
+    response = requests.post(url + "/api/auth/token", json={"email": email})
+
+    logger.info(f"{response.status_code} - {response.headers}") 
     
-    return r
+    return response
 
 
 def get_incidents(url: str, token: str, skip=0) -> list:
@@ -102,10 +116,12 @@ def get_incidents(url: str, token: str, skip=0) -> list:
 
     while (True):
         try:
+            logger.info(f"Requesting 100 incidents, {skip = }")
             response = request_incidents(url, token, top=100, skip=skip)
             if response.status_code == 418:
                 jsonable_to_file(response.json(), "teapot.txt", mode='a')
                 raise requests.exceptions.Timeout
+            #todo validate response
 
         except requests.exceptions.Timeout as err:
             if retry: 
@@ -150,7 +166,7 @@ def get_incidents(url: str, token: str, skip=0) -> list:
 
 def request_incidents(url: str, token: str, top=10, skip=0) -> Response:
     '''  
-    Another unnecessary docstring
+    todo: Another unnecessary docstring
 
     Args:
         url (str): url!
@@ -172,6 +188,9 @@ def request_incidents(url: str, token: str, top=10, skip=0) -> Response:
 
 
 def request_incident(url: str, token: str, id='INC-SQLI-001') -> Response:
+    '''  
+    todo: Another unnecessary docstring
+    '''
     header = {"Authorization": "Bearer " + token}
     response = requests.get(url + "/api/incidents/" + id, headers=header)
 
@@ -185,19 +204,21 @@ def request_summary(url: str, token: str) -> Response:
     header = {"Authorization": "Bearer " + token}
     response = requests.get(url + "/api/incidents/summary", headers=header)
 
-    jsonable_to_file(response.json(), "summary_respones.json", mode='w')
-
     logger.info(f"{response.status_code} - {response.headers}")
 
     return response
 
 
 def incidents_to_db(incidents, database="alerts.db") -> None:
+    '''  
+    todo: Another unnecessary docstring
+    todo: skal omskrives til executemany
+    '''
     
     print("starting output to db")
     try:
         with sqlite3.connect(fr"db/{database}") as connection:
-            db.init_db(connection)
+            #db.init_db(connection)
         
             for incident in incidents:
                 db.add_incident(connection, incident)
@@ -219,6 +240,9 @@ def incidents_to_db(incidents, database="alerts.db") -> None:
 
 
 def create_index_db(incidents, database="alerts.db") -> None:
+    '''  
+    todo: for testing
+    '''
     
     print("starting output to db")
     try:
@@ -236,10 +260,7 @@ def create_index_db(incidents, database="alerts.db") -> None:
 
 
 def jsonable_to_file(jsonable, filename="out.json", mode='a') -> None:
-    '''Simple jsonable output to file, mostly for manual testing.
-
-    Args:
-    '''
+    '''Simple jsonable output to file, mostly for manual testing'''
     try:
         with open(BASE_PATH / filename, mode) as file:
             o = json.dumps(jsonable, indent=4)
@@ -250,6 +271,9 @@ def jsonable_to_file(jsonable, filename="out.json", mode='a') -> None:
 
 
 def setup_logger(log_file_name="exam.log") -> logging.Logger:
+    '''  
+    todo: Another unnecessary docstring
+    '''
     logging.basicConfig(
         filename=BASE_PATH / log_file_name,
         encoding="utf-8",
@@ -301,8 +325,7 @@ def main() -> None:
         print("E-mail and url is required. Please see --help", file=sys.stderr)
         raise SystemExit(1)  
 
-
-    # todo think should  tkoen be saved in env?
+ 
     token = get_token(url, email) 
 
     if args.debug:
@@ -311,47 +334,28 @@ def main() -> None:
         create_index_db(incidents, "exam.db")
         raise SystemExit(1)  
     
-    ################################################################################33
-    #incidents = get_incidents(url, token, skip=590)
-      
-    #incidents_to_db(incidents, "exam.db")
-    #raise SystemExit(1)  
-    #######################################################################
 
-
-    # check how many incidents in sky
+    # check hvor mange incidents der er på serveren.
     summary = request_summary(url, token)
     summary = summary.json()
     count_in_sky = summary["total_incidents"]
     print(count_in_sky, "sky")
 
-    # check how many incidents in db
+    # check hvor mange incidents der er i db, og initialiser db.
     with sqlite3.connect(fr"db/exam.db") as connection:
         db.init_db(connection)
         count_in_db =(db.get_count_incidents(connection))
     
-    # if there is new incidents, dl them
+    # Hvis der er nye incidents, request dem.
     print(count_in_db, 'db')
-
-
-
     if count_in_sky > count_in_db:
         incidents = get_incidents(url, token, skip=count_in_db)
         
         incidents_to_db(incidents, "exam.db")
-    #todo some kind of message if no new
-
-    '''
-    if args.debug:
-        r = request_incident(url, token)
-        r = r.json()
-        #print(json.dumps(r, indent=4))
     else:
-        pass
-        #incidents = get_incidents(url, token)
-        #output_to_db(incidents, "exam.db")
-        #output_to_file(incidents)
-    '''
+        print("No new incidents.")
+
+    print("Done.")
 
 if __name__ == "__main__":
     main()

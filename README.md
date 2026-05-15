@@ -21,25 +21,29 @@ python -m venv .venv
 source .venv/bin/activate
 source .venv/bin/activate.fish
 
+----------------------
 
-todo:
-sql executemany
-ioc types skal tages fra api
-connection.rollback()  # type: ignore
-tilføj log om requests
-rate limiting - if hitting rate limit send current recieved to db
-
+## flyttet til trello
 create validation schema for
 -token response - not done
 -bulk response
 -incident - needs testing
 -alert - needs testing
 
-update with built-in types for email, ips, hosts?....
+lav kun json-output hvis debug er sat.
+sql executemany
+
+rate limiting - if hitting rate limit send current recieved to db
+ioc types skal tages fra api - ok, skal testes
+
+# OVervejelser
+Hvad sker der hvis .env ikke findes
+bør token gemmes i env
+vi bruger ikke db_init.sql - skal vi bare slette den?
 
 create new sql schema
 
-logging - skal tilføje detailer på task
+retry i get token skal genovervejes. 
 -------------------------
 
 jsonschema

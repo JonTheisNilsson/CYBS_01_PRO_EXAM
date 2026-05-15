@@ -1,7 +1,6 @@
 import datetime
 
 
-
 def drop_db(connection) -> None:
     cursor = connection.cursor()
     cursor.execute('''DROP TABLE incidents''')
@@ -93,7 +92,6 @@ def add_index(connection, incident) -> None:
                    (incident['incidentId'],
                     incident['incidentName']))
     connection.commit()
-
 
 
 def get_count_incidents(connection) -> int:
