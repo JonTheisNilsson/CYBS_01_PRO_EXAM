@@ -126,7 +126,8 @@ def get_incidents(url: str, token: str, skip=0) -> list:
         except requests.exceptions.Timeout as err:
             if retry: 
                 print("Timeout. Retrying in 5 sec")
-                time.sleep(5)
+                wait_with_animation(5)
+                #time.sleep(5)
                 retry = False
                 continue
 
@@ -156,8 +157,9 @@ def get_incidents(url: str, token: str, skip=0) -> list:
         
         if "@odata.nextLink" in response:
             skip += 100
-            print("Waiting...")
-            time.sleep(2)
+            wait_with_animation(2)
+            #print("Waiting...")
+            #time.sleep(2)
         else:
             break
 
@@ -218,8 +220,6 @@ def incidents_to_db(incidents, database="alerts.db") -> None:
     print("starting output to db")
     try:
         with sqlite3.connect(fr"db/{database}") as connection:
-            #db.init_db(connection)
-        
             for incident in incidents:
                 db.add_incident(connection, incident)
 
@@ -230,7 +230,6 @@ def incidents_to_db(incidents, database="alerts.db") -> None:
                     
                     for type_, values in entities.items():
                         for value in values:
-                            #print(f"{type_} - {value}")
                             db.add_ioc(connection, incident["incidentId"], type_, value)         
 
     except Exception as err:
@@ -269,6 +268,16 @@ def jsonable_to_file(jsonable, filename="out.json", mode='a') -> None:
     except Exception as err:
         print("oh no, my output to file", err)
 
+def wait_with_animation(seconds: int=1):
+    '''Waiting x seconds while displaying animation
+    '''
+    animation = "|/-\\"
+    id = 0
+    end = time.time() + seconds
+    while end > time.time():
+        print(animation[id % len(animation)], end="\r")
+        id += 1
+        time.sleep(0.1)
 
 def setup_logger(log_file_name="exam.log") -> logging.Logger:
     '''  
@@ -298,11 +307,11 @@ def main() -> None:
     args = parser.parse_args()
     # todo: add a reset flag to drop db, download everything from to top. maybe backup db
 
-    #set module directory todo
+    #get module directory
     global BASE_PATH
     BASE_PATH = Path(__file__).resolve().parent
 
-    #setup env todo anything else?
+    #Loading local environmennts varibles
     load_dotenv() 
 
     # setting logger to global to avoid having to pass it around
@@ -339,7 +348,7 @@ def main() -> None:
     summary = request_summary(url, token)
     summary = summary.json()
     count_in_sky = summary["total_incidents"]
-    print(count_in_sky, "sky")
+    print(f"Incidents on server: {count_in_sky}")
 
     # check hvor mange incidents der er i db, og initialiser db.
     with sqlite3.connect(fr"db/exam.db") as connection:
@@ -347,15 +356,16 @@ def main() -> None:
         count_in_db =(db.get_count_incidents(connection))
     
     # Hvis der er nye incidents, request dem.
-    print(count_in_db, 'db')
+    print(f"Incidents in database: {count_in_db}")
     if count_in_sky > count_in_db:
+        print("Requesting remaining incidents")
         incidents = get_incidents(url, token, skip=count_in_db)
         
         incidents_to_db(incidents, "exam.db")
     else:
         print("No new incidents.")
 
-    print("Done.")
+    print("Done")
 
 if __name__ == "__main__":
     main()
