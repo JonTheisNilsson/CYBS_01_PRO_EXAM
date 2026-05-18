@@ -20,4 +20,4 @@ def wait(seconds: int, animation:str|list):
     print('\033[?25h', end="") # make cursor visible"
 
 
-wait(3, ani2)
+wait(10, ani3)

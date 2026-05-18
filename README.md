@@ -23,6 +23,24 @@ source .venv/bin/activate.fish
 
 ----------------------
 
+root
+├── db
+│   ├── dp.py
+|   └── exam.db
+├── json_schema
+│   ├── schema_alert.json
+│   ├── schema_bulk.json
+│   ├── schema_incident.json
+│   ├── schema_summary.json
+|   └── schema_token.json
+├── .env
+├── exam.log
+├── main.py
+├── requirements.txt
+├── token
+└── validate.py
+
+
 ## flyttet til trello
 create validation schema for
 -token response - not done
