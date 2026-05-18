@@ -211,7 +211,7 @@ def request_summary(url: str, token: str) -> Response:
     return response
 
 
-def incidents_to_db(incidents, database="alerts.db") -> None:
+def incidents_to_db(incidents, db_path: Path) -> None:
     '''  
     todo: Another unnecessary docstring
     todo: skal omskrives til executemany
@@ -219,7 +219,7 @@ def incidents_to_db(incidents, database="alerts.db") -> None:
     
     print("starting output to db")
     try:
-        with sqlite3.connect(fr"db/{database}") as connection:
+        with sqlite3.connect(db_path) as connection:
             for incident in incidents:
                 db.add_incident(connection, incident)
 
@@ -269,6 +269,24 @@ def jsonable_to_file(jsonable, filename="out.json", mode='a') -> None:
         print("oh no, my output to file", err)
 
 
+def load_email_and_url(args) -> tuple[str, str]:
+    if args.url:
+        url = args.url
+    else:
+        url = os.getenv("URL")
+        
+    if args.email:
+        email = args.email
+    else:
+        email = os.getenv("EMAIL")
+
+    if url is None or email is None:
+        print("E-mail and url is required. Please see --help", file=sys.stderr)
+        raise SystemExit(1)  
+    
+    return url, email
+
+
 def wait_seconds(seconds: int=1, animation: str|list="|/-\\") -> None:
     '''Waiting x seconds while displaying animation
     todo: vi håndtere ikke overflow, er faktisk ikke sikker på hvordan det fungerer i python, da int ikke 
@@ -276,13 +294,19 @@ def wait_seconds(seconds: int=1, animation: str|list="|/-\\") -> None:
     todo: Siden vi højst venter et par sekunder er det ikke nødvendigt, men det ville være god 
     stil at gardere sig imod det, eller i hvert fald sætte sig ind i.
     '''
+    try:
+        id = 0
+        end = time.time() + seconds
 
-    id = 0
-    end = time.time() + seconds
-    while end > time.time():
-        print(animation[id % len(animation)], end="\r")
-        id += 1
-        time.sleep(0.1)
+        print('\033[?25l', end="") # make cursor invisible,  see "ANSI Escape Sequences"
+
+        while end > time.time():
+            print(animation[id % len(animation)], end="\r")
+            id += 1
+            time.sleep(0.1)
+
+    finally:      
+        print('\033[?25h', end="") # make cursor visible"
 
 
 def setup_logger(log_file_name="exam.log") -> logging.Logger:
@@ -307,11 +331,15 @@ def setup_logger(log_file_name="exam.log") -> logging.Logger:
 def main() -> None:
     # arg parser
     parser = argparse.ArgumentParser()
-    parser.add_argument("-u", "--url", help="url. Can be stored in .env. todo")
+    parser.add_argument("-u", "--url", help="Server url. Can be stored in .env")
     parser.add_argument("-e", "--email", help="Student e-mail. Can be stored in .env")
-    parser.add_argument("-d", "--debug", action='store_true', help="Only request single incident, no db")
+    parser.add_argument("-d", "--debug", action='store_true', help="Debug. Print out responses as json-files")
     args = parser.parse_args()
     # todo: add a reset flag to drop db, download everything from to top. maybe backup db
+
+    global DEBUG
+    if args.debug:
+        DEBUG = True
 
     #get module directory
     global BASE_PATH
@@ -324,31 +352,9 @@ def main() -> None:
     global logger
     logger = setup_logger()
 
-    #set url and email
-    if args.url:
-        url = args.url
-    else:
-        url = os.getenv("URL")
-        
-    if args.email:
-        email = args.email
-    else:
-        email = os.getenv("EMAIL")
-
-    # url and email is required, todo better error message, add log
-    if url is None or email is None:
-        print("E-mail and url is required. Please see --help", file=sys.stderr)
-        raise SystemExit(1)  
-
- 
-    token = get_token(url, email) 
-
-    if args.debug:
-        print("creating index of all incidents to check for dupes")
-        incidents= get_incidents(url, token)
-        create_index_db(incidents, "exam.db")
-        raise SystemExit(1)  
+    url, email = load_email_and_url(args)
     
+    token = get_token(url, email) 
 
     # check hvor mange incidents der er på serveren.
     summary = request_summary(url, token)
@@ -356,8 +362,11 @@ def main() -> None:
     count_in_sky = summary["total_incidents"]
     print(f"Incidents on server: {count_in_sky}")
 
+    DB_PATH = BASE_PATH / "db" / "exam.db"
+
     # check hvor mange incidents der er i db, og initialiser db.
-    with sqlite3.connect(fr"db/exam.db") as connection:
+    #with sqlite3.connect(fr"db/exam.db") as connection:
+    with sqlite3.connect(DB_PATH) as connection:
         db.init_db(connection)
         count_in_db =(db.get_count_incidents(connection))
     
@@ -367,7 +376,7 @@ def main() -> None:
         print("Requesting remaining incidents")
         incidents = get_incidents(url, token, skip=count_in_db)
         
-        incidents_to_db(incidents, "exam.db")
+        incidents_to_db(incidents, DB_PATH)
     else:
         print("No new incidents.")
 
