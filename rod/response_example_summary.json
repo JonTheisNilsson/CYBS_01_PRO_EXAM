@@ -1,0 +1,36 @@
+{
+    "by_classification": {
+        "FalsePositive": 83,
+        "InformationalExpectedActivity": 81,
+        "TruePositive": 85
+    },
+    "by_severity": {
+        "Critical": 70,
+        "High": 64,
+        "Low": 53,
+        "Medium": 62
+    },
+    "by_status": {
+        "Active": 88,
+        "InProgress": 76,
+        "Resolved": 85
+    },
+    "recent_incidents": 249,
+    "top_malware_families": {
+        "BlackEnergy": 26,
+        "Cobalt Strike": 23,
+        "Emotet": 30,
+        "Industroyer": 32,
+        "Mimikatz": 26,
+        "PowerShell Empire": 26,
+        "Qakbot": 26,
+        "TRITON": 32,
+        "TrickBot": 28
+    },
+    "top_threat_actors": {
+        "APT28": 28,
+        "APT33": 22,
+        "Lazarus Group": 23
+    },
+    "total_incidents": 249
+}

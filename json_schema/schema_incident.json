@@ -55,8 +55,6 @@
     "threatFamily": {"type": "string"}
   },
   "required": [
-    "alerts",
-    "assignedTo",
     "classification",
     "comments",
     "createdTime",

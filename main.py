@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-""" Programmering exam Cybersecurity 2026 EK
+"""Programmering exam Cybersecurity 2026 EK
 
  Dette program bruges til at hente incidents fra et API
-og gemme dem i en SQLite database som vi har lært om i skolen.
+og gemme dem i en SQLite database som vi har lært om i faget.
 
 Programmet håndterer authentication med en token som vi starter med at requeste,
 den bruger derefter den token til at requeste incidents fra API'et, i et json format,
 g vi gemmer derefter incidents, alerts, IOC i databasen som vi har lavet
  
-Der bruges forskellige Python biblioteker til blandt andet:
+Der bruges forskellige Python moduler til blandt andet:
 - HTTP requests
 - databasehåndtering
 - JSON behandling
@@ -17,13 +17,12 @@ Der bruges forskellige Python biblioteker til blandt andet:
 vi har gjort så programmet bruger en lokal .env fil
 til at hente URL og email automatisk.
 
-Modified: 2026-05-18
+Modified: 2026-05-19
 Authors:
 Jon Theis Nilsson
 Rasmus Nymark Lund
 Christian Bjørnsholm Madseb
 Daniel Dara Ali Zarhoush
-
 """
 
 #region imports
@@ -41,7 +40,7 @@ import requests
 from requests import Response
 from dotenv import load_dotenv
 
-import db
+#import db
 from validate import validate_response, validate_json
 #endregion
 
@@ -141,27 +140,28 @@ def get_incidents(url: str, token: str, skip=0) -> list:
             logger.info(f"Requesting 100 incidents, {skip = }")
             response = request_incidents(url, token, top=100, skip=skip)
             if response.status_code == 418:
-                jsonable_to_file(response.json(), "teapot.txt", mode='a')
+                jsonable_to_file(response.content, "teapot.txt", mode='a')
                 raise requests.exceptions.Timeout
-            #TODO validate response
-   
+
             if response.status_code != 200:
                 with open("temp_error.txt", 'w') as file:
-                    file.write(str(response.content)) # TODO: kan det skiftes ud med eksisterende funktion?
+                    file.write(str(response.content) + '\n')
                 raise Exception
-
-            response = response.json() # TODO: error handleing
             
-            #TODO
-            #if debug:
-            #   jsonable_to_file(response, f"tmp_bulk_response_{skip}.json", 'w')
+            '''
+            if not validate_response(response, BASE_PATH / "json_schema" / "schema_incident.json"):
+                raise Exception
+            '''
+   
+            response = response.json() 
+            
+            #TODO: test
+            if DEBUG:
+                jsonable_to_file(response, f"tmp_bulk_response_{skip}.json", 'w')
 
             for i in response["value"]:
-                if validate_json(i, BASE_PATH / "json_schema" / "schema_incident.json"):
-                    incidents.append(i)
-                else:
-                    logger.error(f"Validation error, {i} ") # TODO what to do 
-            
+                incidents.append(i)
+                
             if "@odata.nextLink" in response:
                 skip += 100
                 wait_seconds(2)
@@ -237,6 +237,14 @@ def init_db(connection, sql:str="init_db.sql") -> None:
         connection.commit()
     except:
         pass
+
+
+def get_count_incidents_db(connection) -> int:
+    cursor = connection.cursor()
+    cursor.execute(
+    '''select count( ) from incidents''')
+    count = cursor.fetchone()
+    return count[0]
 
 
 def incidents_to_db(incidents, db_path: Path) -> None:
@@ -355,13 +363,14 @@ def main() -> None:
     #set module directories
     global BASE_PATH
     BASE_PATH = Path(__file__).resolve().parent
-    DB_PATH = BASE_PATH / "exam2.db" # TODO: could be less hardcoded. 
+    DB_PATH = BASE_PATH / "exam.db" # TODO: could be less hardcoded. 
 
     # setting logger to global to avoid having to pass it around
     global logger
     logger = setup_logger()
 
     global DEBUG
+    DEBUG = False
     if args.debug:
         logger.info("Debug enabled")
         DEBUG = True
@@ -381,7 +390,7 @@ def main() -> None:
     # check hvor mange incidents der er i db, og initialiser db.
     with sqlite3.connect(DB_PATH) as connection:
         init_db(connection)
-        count_in_db =(db.get_count_incidents(connection))
+        count_in_db =(get_count_incidents_db(connection))
     
     # Hvis der er nye incidents, request dem.
     print(f"Incidents in database: {count_in_db}")
