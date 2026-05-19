@@ -41,7 +41,7 @@ import requests
 from requests import Response
 from dotenv import load_dotenv
 
-import db.db as db
+import db
 from validate import validate_response, validate_json
 #endregion
 
@@ -228,6 +228,17 @@ def request_summary(url: str, token: str) -> Response:
     return response
 
 
+def init_db(connection, sql:str="init_db.sql") -> None:
+    try:
+        with open (sql, 'r') as file: 
+            init_sql = file.read() 
+        cursor = connection.cursor()
+        cursor.executescript(init_sql)
+        connection.commit()
+    except:
+        pass
+
+
 def incidents_to_db(incidents, db_path: Path) -> None:
     """Saves all incidents to database.
 
@@ -236,20 +247,31 @@ def incidents_to_db(incidents, db_path: Path) -> None:
         db_path (Path) - Path to database
     """
     
-    print("starting output to db")
+    _incidents = []
+    _alerts = []
+    _iocs = []
+
+    for incident in incidents:
+        tmp = [incident["incidentId"], incident["incidentName"], incident["severity"], incident["status"], incident["createdTime"]]
+        _incidents.append(tmp)
+
+        for alert in incident.get("alerts", []):
+            tmp = [alert["alertId"], incident["incidentId"], alert["machineId"], alert["detectionSource"], alert["firstActivity"]]
+            _alerts.append(tmp)
+
+            entities = alert['entities']
+        
+            for type_, values in entities.items():
+                for value in values:
+                    _iocs.append([incident["incidentId"], type_, value])         
+
     try:
         with sqlite3.connect(db_path) as connection:
-            for incident in incidents:
-                db.add_incident(connection, incident)
-
-                for alert in incident.get("alerts", []):
-                    db.add_alert(connection, alert, incident["incidentId"])
-                   
-                    entities = alert['entities']
-                    
-                    for type_, values in entities.items():
-                        for value in values:
-                            db.add_ioc(connection, incident["incidentId"], type_, value)         
+            cursor = connection.cursor()
+            cursor.executemany('INSERT OR REPLACE INTO incidents VALUES (?, ?, ?, ?, ?)', _incidents)
+            cursor.executemany('INSERT OR REPLACE INTO alerts VALUES (?, ?, ?, ?, ?)', _alerts)
+            cursor.executemany('INSERT OR REPLACE INTO iocs VALUES (?, ?, ?)', _iocs)
+            connection.commit()
 
     except Exception as err:
         logger.error(err)
@@ -333,7 +355,7 @@ def main() -> None:
     #set module directories
     global BASE_PATH
     BASE_PATH = Path(__file__).resolve().parent
-    DB_PATH = BASE_PATH / "db" / "exam.db" # TODO: could be less hardcoded. 
+    DB_PATH = BASE_PATH / "exam2.db" # TODO: could be less hardcoded. 
 
     # setting logger to global to avoid having to pass it around
     global logger
@@ -357,9 +379,8 @@ def main() -> None:
     print(f"Incidents on server: {count_in_sky}")
 
     # check hvor mange incidents der er i db, og initialiser db.
-    #with sqlite3.connect(fr"db/exam.db") as connection:
     with sqlite3.connect(DB_PATH) as connection:
-        db.init_db(connection)
+        init_db(connection)
         count_in_db =(db.get_count_incidents(connection))
     
     # Hvis der er nye incidents, request dem.
