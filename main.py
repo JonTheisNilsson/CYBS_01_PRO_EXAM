@@ -139,19 +139,14 @@ def get_incidents(url: str, token: str, skip=0) -> list:
         try:
             logger.info(f"Requesting 100 incidents, {skip = }")
             response = request_incidents(url, token, top=100, skip=skip)
-            if response.status_code == 418:
-                jsonable_to_file(response.content, "teapot.txt", mode='a')
-                raise requests.exceptions.Timeout
 
             if response.status_code != 200:
-                with open("temp_error.txt", 'w') as file:
-                    file.write(str(response.content) + '\n')
+                out = "temp_error.txt"
+                if response.status_code == 418:
+                    out = "teapot.txt"
+                with open(out, 'w') as file:
+                    file.write(response.content.decode() + '\n')
                 raise Exception
-            
-            '''
-            if not validate_response(response, BASE_PATH / "json_schema" / "schema_incident.json"):
-                raise Exception
-            '''
    
             response = response.json() 
             
