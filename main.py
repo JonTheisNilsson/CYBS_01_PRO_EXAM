@@ -231,7 +231,8 @@ def init_db(connection, sql:str="init_db.sql") -> None:
         cursor.executescript(init_sql)
         connection.commit()
     except:
-        pass
+        print("cant create db.")
+        #raise Exception #TODO
 
 
 def get_count_incidents_db(connection) -> int:

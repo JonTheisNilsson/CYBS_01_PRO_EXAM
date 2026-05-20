@@ -1,10 +1,12 @@
+BEGIN;
+
 CREATE TABLE IF NOT EXISTS incidents (
 incidentID      TEXT PRIMARY KEY,
 incidentName    TEXT,
 severity        TEXT,
 status          TEXT,
 createdTime     TEXT
-)
+);
 
 
 CREATE TABLE IF NOT EXISTS alerts (
@@ -13,7 +15,7 @@ incidentID          TEXT,
 machineID           TEXT,
 detectionSource     TEXT,
 firstActivity       TEXT
-)
+);
 
 
 CREATE TABLE IF NOT EXISTS iocs (
@@ -22,3 +24,5 @@ type        TEXT,
 value       TEXT,
 PRIMARY KEY (incidentId, type, value)
 );
+
+COMMIT;
