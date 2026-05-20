@@ -1,9 +1,0 @@
-{
-    "email": "joni0003@stud.ek.dk",
-    "expires_at": "2026-05-02T23:11:53.487109+00:00",
-    "expires_in_hours": 48.0,
-    "instructions": "Use this token in Authorization header: Bearer <token>",
-    "message": "Token retrieved successfully",
-    "note": "Token will expire in 48.0 hours. Request a new token if it expires.",
-    "token": "student-e4XWO0_rJw4-Kv3IckdmGQ"
-}

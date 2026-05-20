@@ -2,7 +2,7 @@
 """Programmering exam Cybersecurity 2026 EK
 
  Dette program bruges til at hente incidents fra et API
-og gemme dem i en SQLite database som vi har lært om i faget.
+og gemme dem i en lokal SQLite database som vi har lært om i faget.
 
 Programmet håndterer authentication med en token som vi starter med at requeste,
 den bruger derefter den token til at requeste incidents fra API'et, i et json format,
