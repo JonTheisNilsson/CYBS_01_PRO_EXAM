@@ -141,11 +141,11 @@ def get_incidents(url: str, token: str, skip=0) -> list:
             response = request_incidents(url, token, top=100, skip=skip)
 
             if response.status_code != 200:
+                print("Something went wrong when requesting incidents.")
                 raise Exception
    
             response = response.json() 
             
-            #TODO: test
             if DEBUG:
                 jsonable_to_file(response, f"tmp_bulk_response_{skip}.json", 'w')
 
@@ -170,7 +170,7 @@ def get_incidents(url: str, token: str, skip=0) -> list:
 
         except Exception as err:
             print("Error while retriving data. Flushing already recieved data. There can more to retrive on server.")
-            logger.error(err)
+            logger.error("Error while recieveing incidents")
             break  
 
     return incidents
@@ -227,7 +227,6 @@ def init_db(connection, sql:str="init_db.sql") -> None:
         connection.commit()
     except:
         print("cant create db.")
-        #raise Exception #TODO
 
 
 def get_count_incidents_db(connection) -> int:
