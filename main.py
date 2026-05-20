@@ -141,11 +141,6 @@ def get_incidents(url: str, token: str, skip=0) -> list:
             response = request_incidents(url, token, top=100, skip=skip)
 
             if response.status_code != 200:
-                out = "temp_error.txt"
-                if response.status_code == 418:
-                    out = "teapot.txt"
-                with open(out, 'w') as file:
-                    file.write(response.content.decode() + '\n')
                 raise Exception
    
             response = response.json() 

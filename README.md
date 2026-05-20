@@ -4,18 +4,19 @@ Dette program bruges til at hente incidents fra et API
 og gemme dem i en lokal SQLite database.
 
 ## Struktur
-root<br />
-├── json_schema<br />
-│   ├── schema_summary.json<br />
-|   └── schema_token.json<br />
-├── .env<br />
-├── exam.db<br />
-├── db.py<br />
-├── exam.log<br />
-├── main.py<br />
-├── requirements.txt<br />
-├── token<br />
-└── validate.py<br />
+root
+├── json_schema
+│   ├── schema_summary.json
+|   └── schema_token.json
+├── .env
+├── exam.db
+├── db.py
+├── exam.log
+├── main.py
+├── README.md
+├── requirements.txt
+├── token
+└── validate.py
 
 ## Requirements 
 pip install -r requirements.txt
