@@ -939,3 +939,11 @@
 2026-05-20 13:25 - INFO - Attempting to open local token.
 2026-05-20 13:25 - INFO - Token got
 2026-05-20 13:25 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Wed, 20 May 2026 11:25:49 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-20 18:50 - INFO - Attempting to open local token.
+2026-05-20 18:50 - INFO - Failure to find local token. [Errno 2] No such file or directory: 'token'
+2026-05-20 18:50 - INFO - Requesting new token.
+2026-05-20 18:50 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Wed, 20 May 2026 16:50:32 GMT', 'Content-Type': 'application/json', 'Content-Length': '336', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-20 18:50 - INFO - Token got
+2026-05-20 18:50 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Wed, 20 May 2026 16:50:32 GMT', 'Content-Type': 'application/json', 'Content-Length': '509', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}
+2026-05-20 18:50 - INFO - Requesting 100 incidents, skip = 2106
+2026-05-20 18:50 - INFO - 200 - {'Server': 'nginx/1.24.0 (Ubuntu)', 'Date': 'Wed, 20 May 2026 16:50:33 GMT', 'Content-Type': 'application/json', 'Content-Length': '54232', 'Connection': 'keep-alive', 'Access-Control-Allow-Origin': '*, *', 'Access-Control-Allow-Methods': 'GET, POST, OPTIONS', 'Access-Control-Allow-Headers': 'Authorization, Content-Type'}

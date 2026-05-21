@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """Programmering exam Cybersecurity 2026 EK
 
  Dette program bruges til at hente incidents fra et API
@@ -227,6 +227,8 @@ def init_db(connection, sql:str="init_db.sql") -> None:
         connection.commit()
     except:
         print("cant create db.")
+        #TODO: missing logging
+        #TODO: missing exception? Where did it go?
 
 
 def get_count_incidents_db(connection) -> int:
